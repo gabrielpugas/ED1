@@ -1,6 +1,7 @@
 #include<stdio.h>
 #include<conio.h>
 #include<windows.h> 
+#include<locale.h>
 
 
 int validaArq(char par1[50]) {
@@ -13,10 +14,11 @@ int validaArq(char par1[50]) {
 
 
 int main () {
+	setlocale(LC_ALL, "Portuguese");
     char op, par1[50];
 
     do{
-        printf("Este eh o exercicio de revisao da disciplina Estrutura de Dados 1,\ne sera a ultima vez que vou cursar essa materia!\n");
+        printf("Este é o exercicio de revisao da disciplina Estrutura de Dados 1,\ne sera a ultima vez que vou cursar essa materia!\n");
         printf("\nMenu Inicial\n");
 		printf("A - Validar a existencia do Arquivo de Dados 'Cidades.dat'\n");
         printf("B - Cadastrar cidades\n");
