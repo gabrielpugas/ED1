@@ -33,18 +33,31 @@ int main () {
 		system("cls");
 		
 		switch(op){
-			case 'A': printf("Qual o nome do arquivo que quer validar se existe?\n");
-					  gets(par1);
-					  if(validaArq(par1))
-					  	printf("O nome digitado eh um nome de arquivo valido!\n");
-					  else
-					  	printf("O nome digitado NAO eh um nome de arquivo valido!");
+			case 'A':   printf("Qual o nome do arquivo que quer validar se existe?\n");
+					    gets(par1);
+					    if(validaArq(par1))
+					  		printf("O nome digitado eh um nome de arquivo valido!\n");
+					    else {
+							printf("O nome digitado NAO eh um nome de arquivo valido! Deseja criar o arquivo? (S/N)");
+					  		fflush(stdin); op = toupper(getch());
+					  		if(op=='S'){
+					  			FILE*Ptr = fopen(par1,"w"); 
+								printf("\nArquivo criado com sucesso...");
+								fclose(Ptr);
+							  }	  
+					    }
 						getch(); system("cls"); break;
-			case 'B': printf("teste"); getch(); system("cls"); break;
-			case 'C': printf("teste"); getch(); system("cls"); break;
-			case 'D': printf("teste"); getch(); system("cls"); break;
-			case 'E': printf("teste"); getch(); system("cls"); break;
-			case 'F': printf("teste"); getch(); system("cls"); break;
+						
+			case 'B':   printf("teste"); 
+						getch(); system("cls"); break;
+			case 'C':   printf("teste");
+						getch(); system("cls"); break;
+			case 'D':   printf("teste");
+						getch(); system("cls"); break;
+			case 'E':   printf("teste");
+						getch(); system("cls"); break;
+			case 'F':   printf("teste");
+						getch(); system("cls"); break;
 		}
 		
         
