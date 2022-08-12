@@ -3,6 +3,10 @@
 #include<windows.h> 
 #include<locale.h>
 
+struct TpCidade {
+	char nome[50];
+	int populacao;
+};
 
 int validaArq(char par1[50]) {
 	FILE*PtrArq;
@@ -44,11 +48,16 @@ int main () {
 					  			FILE*Ptr = fopen(par1,"w"); 
 								printf("\nArquivo criado com sucesso...");
 								fclose(Ptr);
-							  }	  
+							  }
+							else printf("\nPressione qualquer tecla...")  ;
 					    }
 						getch(); system("cls"); break;
 						
-			case 'B':   printf("teste"); 
+			case 'B':   printf("Qual cidade gostaria de cadastrar?\n");
+						par1 = gets();
+						if(!ValidaCidade(par1))
+							printf("Essa cidade já está cadastrada. Gostaria de adicionar outra cidade? (S/N)");
+						
 						getch(); system("cls"); break;
 			case 'C':   printf("teste");
 						getch(); system("cls"); break;
