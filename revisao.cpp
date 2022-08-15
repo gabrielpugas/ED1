@@ -46,6 +46,7 @@ int buscaExaustiva(char nomeCidade[50]) {
 int main () {
 	setlocale(LC_ALL, "Portuguese");
     char op, par1[50];
+    int resultado, i;
 
     do{
         printf("Este é o exercicio de revisão da disciplina Estrutura de Dados 1,\ne será a última vez que vou cursar essa matéria!\n");
@@ -83,12 +84,18 @@ int main () {
 			case 'B':   {
 						op = 'S';
 						TpCidade cidade; int *pop;
-						while(op!='S')
+						while(op=='S')
 						{
 							FILE*Ptr = fopen ("cidades.dat","ab+");
 							system("cls");
 							printf("Qual cidade gostaria de cadastrar?\n");
 							gets(cidade.nome);
+							for(i = 0; i<strlen(cidade.nome);i++)
+							{
+								par1[i] = toupper(cidade.nome[i]);
+							}
+							
+							printf("\n%s\n",par1);
 							while(!validaCidade(cidade.nome)&&op!='N') {
 								printf("Essa cidade já está cadastrada. Gostaria de adicionar outra cidade? (S/N)\n");
 								fflush(stdin); op = toupper(getch());
@@ -104,7 +111,7 @@ int main () {
 								scanf("%d",pop);
 								fwrite(&cidade,sizeof(TpCidade),1,Ptr);
 								printf("\nCidade cadastrada com sucesso!\n");
-								printf("\nDeseja adicionar outra cidade?");
+								printf("\nDeseja adicionar outra cidade?(S/N)\n");
 								fflush(stdin);
 								op=toupper(getch());
 							}
@@ -115,8 +122,10 @@ int main () {
 						getch(); system("cls"); break;
 			}
 			case 'C':   {
-						printf("Qual o nome da cidade que deseja saber o número de habitantes?");
+						printf("Qual o nome da cidade que deseja saber o número de habitantes?\n");
 						gets(par1);
+						resultado = buscaExaustiva(par1);
+						printf("Existem %d habitantes em %s.\n",resultado, par1);
 						getch(); system("cls");
 						break;
 			}
