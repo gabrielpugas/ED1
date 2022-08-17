@@ -90,12 +90,7 @@ int main () {
 							system("cls");
 							printf("Qual cidade gostaria de cadastrar?\n");
 							gets(cidade.nome);
-							for(i = 0; i<strlen(cidade.nome);i++)
-							{
-								par1[i] = toupper(cidade.nome[i]);
-							}
-							
-							printf("\n%s\n",par1);
+							strupr(cidade.nome);
 							while(!validaCidade(cidade.nome)&&op!='N') {
 								printf("Essa cidade já está cadastrada. Gostaria de adicionar outra cidade? (S/N)\n");
 								fflush(stdin); op = toupper(getch());
@@ -103,6 +98,7 @@ int main () {
 									system("cls");
 									printf("Qual cidade gostaria de cadastrar?\n");
 									gets(cidade.nome);
+									strupr(cidade.nome);
 								  }
 							}
 							if(validaCidade(cidade.nome)!=0){
@@ -122,10 +118,19 @@ int main () {
 						getch(); system("cls"); break;
 			}
 			case 'C':   {
-						printf("Qual o nome da cidade que deseja saber o número de habitantes?\n");
-						gets(par1);
-						resultado = buscaExaustiva(par1);
-						printf("Existem %d habitantes em %s.\n",resultado, par1);
+						do{
+							printf("Qual o nome da cidade que deseja saber o número de habitantes?\n");
+							gets(par1); strupr(par1);
+							resultado = buscaExaustiva(par1);
+							if(resultado>0)
+								printf("Existem %d habitantes em %s.\n",resultado, par1);
+							else
+								printf("Cidade não cadastrada!\n");
+							printf("\nDeseja pesquisar a população de outra cidade?(S/N)\n");
+							fflush(stdin);
+							op=toupper(getch());
+						}while(op=='S');
+						printf("\nPressione qualquer tecla para voltar ao menu ...");
 						getch(); system("cls");
 						break;
 			}
