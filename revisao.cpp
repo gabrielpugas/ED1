@@ -34,7 +34,7 @@ int buscaExaustiva(char nomeCidade[50]) {
 	FILE*Ptr = fopen("cidades.dat","rb");
 	TpCidade cidade;
 	fread(&cidade,sizeof(TpCidade),1,Ptr);
-	while(!feof(Ptr)&&!strcmp(cidade.nome,nomeCidade))
+	while(!feof(Ptr)&&!strcmp(cidade.nome,nomeCidade)==0)
 		fread(&cidade,sizeof(TpCidade),1,Ptr);
 	if(!feof(Ptr))
 		return cidade.populacao;
@@ -119,6 +119,7 @@ int main () {
 			}
 			case 'C':   {
 						do{
+							system("cls");
 							printf("Qual o nome da cidade que deseja saber o número de habitantes?\n");
 							gets(par1); strupr(par1);
 							resultado = buscaExaustiva(par1);
