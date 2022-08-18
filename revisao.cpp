@@ -42,6 +42,16 @@ int buscaExaustiva(char nomeCidade[50]) {
 		return 0;
 }
 
+void ordenaNome() {
+	FILE*Ptr = fopen("cidades.dat","ab+");
+	TpCidade c;
+	if(Ptr==NULL)
+		printf("Arquivo inexistente.");
+	else
+	{
+		
+	}
+}
 
 int main () {
 	setlocale(LC_ALL, "Portuguese");
