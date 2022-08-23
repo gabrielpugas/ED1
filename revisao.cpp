@@ -53,28 +53,30 @@ void ordenaNome() {
 	}
 }
 
+char menu (void) {
+	printf("Este é o exercicio de revisão da disciplina Estrutura de Dados 1,\ne será a última vez que vou cursar essa matéria!\n");
+    printf("\nMenu Inicial\n");
+	printf("A - Validar a existência do Arquivo de Dados 'Cidades.dat'\n");
+    printf("B - Cadastrar cidades\n");
+    printf("C - Consultar a População a partir do uso de uma Busca Exaustiva que recebe o Nome da Cidade por parâmetro\n");
+    printf("D - Ordenar o Arquivo pelo Nome da Cidade\n");
+    printf("E - Exibir o conteúdo do Arquivo\n");
+    printf("F - Ordenar o Arquivo de forma decrescente pela População\n");
+	printf("\nESC - Sair\n\n");
+    printf("Selecione uma das opções acima:");
+    fflush(stdin);
+	return toupper(getch());
+}
+
 int main () {
 	setlocale(LC_ALL, "Portuguese");
     char op, par1[50];
     int resultado, i;
-
-    do{
-        printf("Este é o exercicio de revisão da disciplina Estrutura de Dados 1,\ne será a última vez que vou cursar essa matéria!\n");
-        printf("\nMenu Inicial\n");
-		printf("A - Validar a existência do Arquivo de Dados 'Cidades.dat'\n");
-        printf("B - Cadastrar cidades\n");
-        printf("C - Consultar a População a partir do uso de uma Busca Exaustiva que recebe o Nome da Cidade por parâmetro\n");
-        printf("D - Ordenar o Arquivo pelo Nome da Cidade\n");
-        printf("E - Exibir o conteúdo do Arquivo\n");
-        printf("F - Ordenar o Arquivo de forma decrescente pela População\n");
-		printf("\nESC - Sair\n\n");
-        printf("Selecione uma das opções acima:");
-        fflush(stdin);
-		op=toupper(getch());
-		system("cls");
-		
+	
+	op=menu();
+    do{		
 		switch(op){
-			case 'A':   {			
+			case 'A':   {system("cls");			
 						printf("Qual o nome do arquivo que quer validar se existe?\n");
 					    gets(par1);
 					    if(validaArq(par1))
@@ -91,7 +93,7 @@ int main () {
 					    }
 						getch(); system("cls"); break;
 			}
-			case 'B':   {
+			case 'B':   {system("cls");
 						op = 'S';
 						TpCidade cidade; int *pop;
 						while(op=='S')
@@ -127,7 +129,7 @@ int main () {
 						printf("\nPressione qualquer tecla para voltar ao menu anterior...");
 						getch(); system("cls"); break;
 			}
-			case 'C':   {
+			case 'C':   {system("cls");
 						do{
 							system("cls");
 							printf("Qual o nome da cidade que deseja saber o número de habitantes?\n");
@@ -145,15 +147,15 @@ int main () {
 						getch(); system("cls");
 						break;
 			}
-			case 'D':   {
+			case 'D':   {system("cls");
 						printf("teste"); getch(); system("cls");
 						break;
 			}
-			case 'E':   {
+			case 'E':   {system("cls");
 						printf("teste"); getch(); system("cls");
 						break;
 			}
-			case 'F':   {
+			case 'F':   {system("cls");
 						printf("teste"); getch(); system("cls");
 						break;
 			}
@@ -161,5 +163,5 @@ int main () {
 		
         
     }
-    while(op!=27);
+    while(menu()!=27);
 }
