@@ -9,8 +9,8 @@ struct TpCidade {
 };
 
 struct TpVendedor {
-	int cod, mes;
-	char nome[20];
+	int cod;
+	char nome[20], mes[9];
 	float vendas;
 };
 
@@ -45,8 +45,8 @@ void cadastraCidade(void) {
 		FILE*Ptr = fopen ("cidades.dat","ab+");
 		system("cls");
 		printf("Qual cidade gostaria de cadastrar?\n");
-		gets(cidade.nome);
-		strupr(cidade.nome);
+		strupr(gets(cidade.nome));
+//		strupr(cidade.nome);
 		while(!validaCidade(cidade.nome)&&op!='N') {
 			printf("Essa cidade já está cadastrada. Gostaria de adicionar outra cidade? (S/N)\n");
 			fflush(stdin); op = toupper(getch());
@@ -85,29 +85,25 @@ int buscaExaustiva(char nomeCidade[50]) {
 		return 0;
 }
 
-void ordenaPorNome() {
-	TpCidade c1, c2, aux;
-	int qtde=1;
+void ordenaPorNomeBouble() {
+	TpCidade c1, c2;
+	int qtde;
 	
-	FILE*ptr=fopen("cidades.dat","ab+");
-	if(ptr!=NULL){	
-		fread(&c1,sizeof(TpCidade),1,ptr);
-		while(!feof(ptr)) {
-			fread(&c1,sizeof(TpCidade),1,ptr); qtde++;
-		}
+	FILE*ptr=fopen("cidades.dat","rb+");
+	if(ptr!=NULL){
+		fseek(ptr,0,2); qtde=ftell(ptr)/sizeof(TpCidade);
 		
 		for(int i=0;i<qtde-1;i++) {
-			fseek(ptr,sizeof(TpCidade)*i,0);
-			for(int j=0;j<qtde-1;j++) {
-				fseek(ptr,sizeof(TpCidade)*j,0);
+			for(int j=i+1;j<qtde;j++) {
+				fseek(ptr,sizeof(TpCidade)*i,0);
 				fread(&c1,sizeof(TpCidade),1,ptr);
+				fseek(ptr,sizeof(TpCidade)*j,0);
 				fread(&c2,sizeof(TpCidade),1,ptr);
 				if(strcmp(c1.nome,c2.nome)>0) {
-					aux = c2;
-					fseek(ptr,sizeof(TpCidade)*-2,1);
-					fwrite(&c1,sizeof(TpCidade),1,ptr);
-					fseek(ptr,sizeof(TpCidade)*-1,1);
-					fwrite(&aux,sizeof(TpCidade),1,ptr);	
+					fseek(ptr,sizeof(TpCidade)*i,0);
+					fwrite(&c2,sizeof(TpCidade),1,ptr);
+					fseek(ptr,sizeof(TpCidade)*j,0);
+					fwrite(&c1,sizeof(TpCidade),1,ptr);	
 				}
 			}
 		}		
@@ -119,7 +115,37 @@ void ordenaPorNome() {
 	printf("Arquivo ordenado pelo nome das cidades.\n");
 }
 
-void exibirArquivo() {
+void ordenaPorPopulacaoDecrescente() {
+	TpCidade c1, c2;
+	int qtde;
+	
+	FILE*ptr=fopen("cidades.dat","rb+");
+	if(ptr!=NULL){
+		fseek(ptr,0,2); qtde=ftell(ptr)/sizeof(TpCidade);
+		
+		for(int i=0;i<qtde-1;i++) {
+			for(int j=i+1;j<qtde;j++) {
+				fseek(ptr,sizeof(TpCidade)*i,0);
+				fread(&c1,sizeof(TpCidade),1,ptr);
+				fseek(ptr,sizeof(TpCidade)*j,0);
+				fread(&c2,sizeof(TpCidade),1,ptr);
+				if(c1.populacao<c2.populacao) {
+					fseek(ptr,sizeof(TpCidade)*i,0);
+					fwrite(&c2,sizeof(TpCidade),1,ptr);
+					fseek(ptr,sizeof(TpCidade)*j,0);
+					fwrite(&c1,sizeof(TpCidade),1,ptr);	
+				}
+			}
+		}		
+	}
+	else
+		printf("Arquivo vazio! Nada para ordenar.\n");
+		
+	fclose(ptr);
+	printf("Arquivo ordenado pelo número de habitantes, de forma decrescente.\n");
+}
+
+void exibirArquivoCidades() {
 	FILE*ptr=fopen("cidades.dat","rb");
 	TpCidade c;
 	
@@ -133,6 +159,7 @@ void exibirArquivo() {
 	}
 	else
 		printf("Erro de abertura do arquivo.\n");
+	fclose(ptr);
 }
 
 void consultaPopulacao(void) {
@@ -155,24 +182,63 @@ void consultaPopulacao(void) {
 		getch();
 }
 
-void criarVendas() {
+void criarArquivoVendas() {
 	FILE*ptr=fopen("vendas.dat","ab");
 	fclose(ptr);
 	printf("Arquivo criado ou já existe!\n\nPressione qualquer tecla para voltar ao menu principal...");
 }
 
+void incluirVendedores() {
+	TpVendedor v;
+	char op='S';
+	
+	FILE*ptr=fopen("vendas.dat","ab+");
+	while(op=='S'){
+		system("cls");
+		printf("Insira as informações do vendedor\n");
+		printf("\nNome: "); fflush(stdin); strupr(gets(v.nome));
+		printf("\nCod: "); scanf("%d",&v.cod);
+		printf("\nMês: "); fflush(stdin); strupr(gets(v.mes));
+		printf("\nValor das vendas: R$"); scanf("%f",&v.vendas);
+		fwrite(&v,sizeof(TpVendedor),1,ptr);
+		printf("\n\nDeseja adicionar outro vendedor? (S/N):");
+		op=toupper(getch());
+	}	
+	fclose(ptr)	;
+}
+
+void exibirArquivoVendas() {
+	FILE*ptr=fopen("vendas.dat","rb");
+	TpVendedor v;
+	
+	if(ptr!=NULL) {
+		printf("Cod\t   Nome            Mês             Vendas\n");
+		fread(&v,sizeof(v),1,ptr);
+		while(!feof(ptr)) {
+			printf("%d\t   %s\t   %s\t   R$%.2f\n",v.cod,v.nome,v.mes,v.vendas);
+			fread(&v,sizeof(v),1,ptr);
+		}
+	}
+	else
+		printf("Erro de abertura do arquivo.\n");
+	fclose(ptr);
+}
 
 char menu (void) {
 	system("cls");
 	printf("Este é o exercicio de revisão da disciplina Estrutura de Dados 1,\ne será a última vez que vou cursar essa matéria!\n");
     printf("\nMenu Inicial\n");
+    printf("\nExercício 1_________________________________________________\n");
 	printf("A - Validar a existência do Arquivo de Dados 'Cidades.dat'\n");
     printf("B - Cadastrar cidades\n");
     printf("C - Consultar a População a partir do uso de uma Busca Exaustiva que recebe o Nome da Cidade por parâmetro\n");
     printf("D - Ordenar o Arquivo pelo Nome da Cidade\n");
-    printf("E - Exibir o conteúdo do Arquivo\n");
+    printf("E - Exibir o conteúdo do arquivo CIDADES.DAT\n");
     printf("F - Ordenar o Arquivo de forma decrescente pela População\n");
+    printf("\nExercício 2_________________________________________________\n");
     printf("G - Criar arquivo VENDAS.DAT\n");
+    printf("H - Cadastrar vendedores\n");
+    printf("I - Exibir o conteúdo do arquivo VENDAS.DAT\n");
 	printf("\nESC - Sair\n\n");
     printf("Selecione uma das opções acima:");
     fflush(stdin);
@@ -216,25 +282,36 @@ int main () {
 			}
 			case 'D':   {
 						system("cls");
-						ordenaPorNome();
+						ordenaPorNomeBouble();
 						getch();
 						break;
 			}
 			case 'E':   {
 						system("cls");
-						exibirArquivo(); getch();
+						exibirArquivoCidades(); getch();
 						break;
 			}
 			case 'F':   {
 						system("cls");
-						printf("teste"); getch();
+						ordenaPorPopulacaoDecrescente(); getch();
 						break;
 			}
 			case 'G':	{
 				system("cls");
-				criarVendas(); getch();
+				criarArquivoVendas(); getch();
 				break;
 			}
+			case 'H':{
+				system("cls");
+				incluirVendedores();
+				break;
+			}
+			case 'I':{
+				system("cls");
+				exibirArquivoVendas(); getch();
+				break;
+			}
+			
 		}
 		
     op=menu();
