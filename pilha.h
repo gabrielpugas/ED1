@@ -1,4 +1,3 @@
-
 #define MAXPILHA 10
 
 struct TpPilha {
@@ -13,7 +12,6 @@ char cheia (int topo);
 char vazia (int topo);
 char topo (TpPilha p);
 void exibir (TpPilha p);
-
 
 void inicializar (TpPilha &p) {
 	p.topo = -1;
@@ -32,15 +30,15 @@ char cheia (int topo) {
 }
 
 char vazia (int topo) {
-	return topo<MAXPILHA-1;
+	return topo==-1;
 }
 
 char topo (TpPilha p) {
 	return p.c[p.topo];
 }
 
-void exibir (TpPilha p) {
-	for(int i=1; i<MAXPILHA; i++)
-		printf("%c\n",retirar(p))
+void exibir (TpPilha p) {	
+	while(!vazia)
+		printf("\n%c",retirar(p);
 }
 
