@@ -1,44 +1,44 @@
 #define MAXPILHA 10
 
 struct TpPilha {
-	int topo;
+	int top;
 	char c[MAXPILHA];	
 };
 
-void inicializar (TpPilha &p);
-void inserir (TpPilha &p, char elem);
-char retirar (TpPilha &p);
-char cheia (int topo);
-char vazia (int topo);
-char topo (TpPilha p);
-void exibir (TpPilha p);
+void init (TpPilha &p);
+void push (TpPilha &p, char elem);
+char pop (TpPilha &p);
+char full (int top);
+char empty (int top);
+char top (TpPilha p);
+void show (TpPilha p);
 
-void inicializar (TpPilha &p) {
-	p.topo = -1;
+void init (TpPilha &p) {
+	p.top = -1;
 }
 
-void inserir (TpPilha &p, char elem) {
-	p.c[++p.topo] = elem;
+void push (TpPilha &p, char elem) {
+	p.c[++p.top] = elem;
 }
 
-char retirar (TpPilha &p) {
-	return p.c[p.topo--];
+char pop (TpPilha &p) {
+	return p.c[p.top--];
 }
 
-char cheia (int topo) {
-	return topo==MAXPILHA-1;
+char full (int top) {
+	return top==MAXPILHA-1;
 }
 
-char vazia (int topo) {
-	return topo==-1;
+char empty (int top) {
+	return top==-1;
 }
 
-char topo (TpPilha p) {
-	return p.c[p.topo];
+char top (TpPilha p) {
+	return p.c[p.top];
 }
 
-void exibir (TpPilha p) {	
-	while(!vazia)
-		printf("\n%c",retirar(p);
+void show (TpPilha p) {	
+	while(!empty)
+		printf("\n%c",pop(p));
 }
 
